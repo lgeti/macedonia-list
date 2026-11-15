@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="mk">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>From Macedonia List</title>
+<title>Од Македонија</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
 <style>
@@ -95,37 +95,37 @@ li.packed .name { color: var(--done); text-decoration: line-through; }
 
 <div class="wrap">
   <header>
-    <div class="route">Македонија <span class="dash"></span><span class="sun" aria-hidden="true"></span><span class="dash"></span> Here</div>
-    <h1>Things to bring from Macedonia</h1>
-    <p class="sub">Add anything to the list. Tick it when it's in the suitcase. Додај што треба да се донесе.</p>
+    <div class="route">Македонија <span class="dash"></span><span class="sun" aria-hidden="true"></span><span class="dash"></span> Тука</div>
+    <h1>Што да се донесе од Македонија</h1>
+    <p class="sub">Додај сѐ што треба да се донесе. Штиклирај кога ќе е спакувано во куферот.</p>
   </header>
 
   <form class="add" id="addForm" autocomplete="off">
     <div class="row">
-      <input type="text" id="name" placeholder="What to bring, e.g. Ајвар" aria-label="Item" maxlength="120" required>
-      <input type="text" id="qty" placeholder="How many / note" aria-label="Amount or note" maxlength="120">
+      <input type="text" id="name" placeholder="Што да се донесе, на пр. Ајвар" aria-label="Производ" maxlength="120" required>
+      <input type="text" id="qty" placeholder="Колку / забелешка" aria-label="Количина или забелешка" maxlength="120">
     </div>
     <div class="row">
-      <div class="seg" role="group" aria-label="Section">
-        <button type="button" id="segFood" data-sec="food" aria-pressed="true">Food · Храна</button>
-        <button type="button" id="segOther" data-sec="other" aria-pressed="false">Other · Друго</button>
+      <div class="seg" role="group" aria-label="Дел">
+        <button type="button" id="segFood" data-sec="food" aria-pressed="true">Храна</button>
+        <button type="button" id="segOther" data-sec="other" aria-pressed="false">Друго</button>
       </div>
-      <button class="primary" id="addBtn" type="submit">Add to list</button>
+      <button class="primary" id="addBtn" type="submit">Додај</button>
     </div>
-    <p class="status" id="status" aria-live="polite">Loading the list…</p>
+    <p class="status" id="status" aria-live="polite">Се вчитува листата…</p>
   </form>
 
   <section id="sec-food">
-    <div class="sec-head"><h2>Food</h2><span class="mk">Храна</span><span class="count" id="count-food"></span></div>
-    <ul id="list-food"><li class="empty">Nothing here yet. Add the first food item above.</li></ul>
+    <div class="sec-head"><h2>Храна</h2><span class="count" id="count-food"></span></div>
+    <ul id="list-food"><li class="empty">Сѐ уште нема ништо. Додај ја првата храна погоре.</li></ul>
   </section>
 
   <section id="sec-other">
-    <div class="sec-head"><h2>Other things</h2><span class="mk">Друго</span><span class="count" id="count-other"></span></div>
-    <ul id="list-other"><li class="empty">Nothing here yet. Add the first item above.</li></ul>
+    <div class="sec-head"><h2>Друго</h2><span class="count" id="count-other"></span></div>
+    <ul id="list-other"><li class="empty">Сѐ уште нема ништо. Додај го првиот производ погоре.</li></ul>
   </section>
 
-  <p class="legend">Changes save for everyone who opens this page. The list refreshes by itself every few seconds.</p>
+  <p class="legend">Промените се зачувуваат за секој што ја отвора страницата. Листата се освежува сама на секои неколку секунди.</p>
 </div>
 
 <script>
@@ -160,12 +160,12 @@ li.packed .name { color: var(--done); text-decoration: line-through; }
       const list = items.filter((i) => i.section === s)
         .sort((a, b) => (a.packed === b.packed ? a.created_at.localeCompare(b.created_at) : a.packed ? 1 : -1));
       const packed = list.filter((i) => i.packed).length;
-      $("count-" + s).textContent = list.length ? packed + " of " + list.length + " packed" : "";
+      $("count-" + s).textContent = list.length ? packed + " од " + list.length + " спакувани" : "";
       ul.textContent = "";
       if (!list.length) {
         const li = document.createElement("li");
         li.className = "empty";
-        li.textContent = !loaded ? "Loading…" : s === "food" ? "Nothing here yet. Add the first food item above." : "Nothing here yet. Add the first item above.";
+        li.textContent = !loaded ? "Се вчитува…" : s === "food" ? "Сѐ уште нема ништо. Додај ја првата храна погоре." : "Сѐ уште нема ништо. Додај го првиот производ погоре.";
         ul.appendChild(li);
         continue;
       }
@@ -174,7 +174,7 @@ li.packed .name { color: var(--done); text-decoration: line-through; }
         if (it.packed) li.className = "packed";
         const cb = document.createElement("input");
         cb.type = "checkbox"; cb.className = "check"; cb.checked = !!it.packed; cb.id = "chk-" + it.id;
-        cb.setAttribute("aria-label", "Packed: " + it.name);
+        cb.setAttribute("aria-label", "Спакувано: " + it.name);
         cb.addEventListener("change", () => setPacked(it, cb.checked));
         const txt = document.createElement("label");
         txt.className = "txt"; txt.htmlFor = cb.id;
@@ -182,12 +182,12 @@ li.packed .name { color: var(--done); text-decoration: line-through; }
         txt.appendChild(n);
         if (it.note) { const q = document.createElement("span"); q.className = "note"; q.textContent = it.note; txt.appendChild(q); }
         const del = document.createElement("button");
-        del.type = "button"; del.className = "del"; del.textContent = "Remove";
+        del.type = "button"; del.className = "del"; del.textContent = "Избриши";
         let timer = null;
         del.addEventListener("click", () => {
           if (!del.classList.contains("arm")) {
-            del.classList.add("arm"); del.textContent = "Tap to confirm";
-            timer = setTimeout(() => { del.classList.remove("arm"); del.textContent = "Remove"; }, 3000);
+            del.classList.add("arm"); del.textContent = "Потврди";
+            timer = setTimeout(() => { del.classList.remove("arm"); del.textContent = "Избриши"; }, 3000);
             return;
           }
           clearTimeout(timer); remove(it);
@@ -203,23 +203,23 @@ li.packed .name { color: var(--done); text-decoration: line-through; }
     try {
       items = await api("GET", "?select=*&order=created_at");
       loaded = true;
-      if (/Loading|Can't reach/.test($("status").textContent)) status("");
+      if (/Се вчитува|Не може/.test($("status").textContent)) status("");
       render();
     } catch (e) {
-      status("Can't reach the list right now. Check your internet connection.");
+      status("Не може да се поврзе со листата. Провери ја интернет врската.");
     }
   }
 
   async function setPacked(it, v) {
     it.packed = v; render();
     try { await api("PATCH", "?id=eq." + it.id, { packed: v }); }
-    catch (e) { status("Couldn't save that tick. Try again."); }
+    catch (e) { status("Не се зачува. Обиди се повторно."); }
     refresh();
   }
   async function remove(it) {
     items = items.filter((x) => x.id !== it.id); render();
-    try { await api("DELETE", "?id=eq." + it.id); status("Removed " + it.name + "."); }
-    catch (e) { status("Couldn't remove it. Try again."); }
+    try { await api("DELETE", "?id=eq." + it.id); status("Избришано: " + it.name + "."); }
+    catch (e) { status("Не се избриша. Обиди се повторно."); }
     refresh();
   }
 
@@ -231,10 +231,10 @@ li.packed .name { color: var(--done); text-decoration: line-through; }
     try {
       await api("POST", "", { name, note: $("qty").value.trim(), section });
       $("name").value = ""; $("qty").value = ""; $("name").focus();
-      status("Added " + name + " to " + (section === "food" ? "Food" : "Other things") + ".");
+      status("Додадено во " + (section === "food" ? "Храна" : "Друго") + ": " + name + ".");
       await refresh();
     } catch (err) {
-      status("Couldn't add it. Check your connection and try again.");
+      status("Не се додаде. Провери ја врската и обиди се повторно.");
     } finally { $("addBtn").disabled = false; }
   });
 
