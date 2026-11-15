@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>From Macedonia List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow column like a packing slip — add bar on top, then a section per bag (Food / Other) */
+:root {
+  --bg: #f7f5f2;
+  --card: #ffffff;
+  --fg: #1f1a17;
+  --muted: #6e655e;
+  --line: #e6e0d9;
+  --accent: #c8102e;
+  --accent-fg: #ffffff;
+  --sun: #f2b705;
+  --sun-soft: #fff4cc;
+  --done: #a39a92;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171412; --card: #221e1b; --fg: #f3eee9; --muted: #a89e95; --line: #3a332e;
+    --accent: #ff4d5e; --accent-fg: #1a0b0d; --sun: #f5c435; --sun-soft: #3a3016; --done: #756c64;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171412; --card: #221e1b; --fg: #f3eee9; --muted: #a89e95; --line: #3a332e;
+  --accent: #ff4d5e; --accent-fg: #1a0b0d; --sun: #f5c435; --sun-soft: #3a3016; --done: #756c64;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px;
+}
+.wrap { max-width: 640px; margin: 0 auto; display: grid; gap: 22px; }
+
+header { display: grid; gap: 6px; }
+.route { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.route .sun { width: 14px; height: 14px; border-radius: 50%; background: var(--sun); box-shadow: 0 0 0 3px var(--sun-soft); flex: none; }
+.route .dash { flex: 0 1 60px; border-top: 2px dashed var(--line); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 7vw, 42px); line-height: 1.05; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); margin: 0; }
+
+.add { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 10px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.add input[type="text"] {
+  flex: 1 1 180px; min-width: 0; font: inherit; color: var(--fg); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px;
+}
+.add input#qty { flex: 0 1 150px; }
+.add input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.seg { display: inline-flex; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+.seg button { font: inherit; font-weight: 600; font-size: 14px; border: 0; background: transparent; color: var(--muted); padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.primary { font: inherit; font-weight: 600; border: 0; border-radius: 10px; padding: 10px 18px; background: var(--accent); color: var(--accent-fg); cursor: pointer; margin-left: auto; }
+.primary:disabled { opacity: .5; cursor: default; }
+.status { font-size: 13px; color: var(--muted); min-height: 1.2em; margin: 0; }
+
+section { display: grid; gap: 8px; }
+.sec-head { display: flex; align-items: baseline; gap: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--fg); }
+.sec-head h2 { font-family: var(--font-display); font-weight: 600; font-size: 22px; margin: 0; }
+.sec-head .mk { color: var(--muted); font-size: 15px; }
+.sec-head .count { margin-left: auto; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+ul { list-style: none; margin: 0; padding: 0; }
+li { display: flex; align-items: center; gap: 12px; padding: 10px 2px; border-bottom: 1px solid var(--line); }
+.check { appearance: none; flex: none; width: 24px; height: 24px; border: 2px solid var(--muted); border-radius: 7px; cursor: pointer; display: grid; place-items: center; background: var(--card); }
+.check:checked { background: var(--accent); border-color: var(--accent); }
+.check:checked::after { content: ""; width: 6px; height: 11px; border: solid var(--accent-fg); border-width: 0 2.5px 2.5px 0; transform: translateY(-1px) rotate(45deg); }
+.check:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.txt { flex: 1; min-width: 0; display: grid; }
+.name { font-weight: 500; overflow-wrap: anywhere; }
+.note { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+li.packed .name { color: var(--done); text-decoration: line-through; }
+.del { flex: none; font: inherit; font-size: 13px; border: 1px solid transparent; background: transparent; color: var(--muted); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.del:hover { border-color: var(--line); }
+.del.arm { background: var(--accent); color: var(--accent-fg); }
+.empty { color: var(--muted); font-size: 14px; padding: 12px 2px; }
+.legend { font-size: 13px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { li { transition: background .2s; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="route">Македонија <span class="dash"></span><span class="sun" aria-hidden="true"></span><span class="dash"></span> Here</div>
+    <h1>Things to bring from Macedonia</h1>
+    <p class="sub">Add anything to the list. Tick it when it's in the suitcase. Додај што треба да се донесе.</p>
+  </header>
+
+  <form class="add" id="addForm" autocomplete="off">
+    <div class="row">
+      <input type="text" id="name" placeholder="What to bring, e.g. Ајвар" aria-label="Item" maxlength="120" required>
+      <input type="text" id="qty" placeholder="How many / note" aria-label="Amount or note" maxlength="120">
+    </div>
+    <div class="row">
+      <div class="seg" role="group" aria-label="Section">
+        <button type="button" id="segFood" data-sec="food" aria-pressed="true">Food · Храна</button>
+        <button type="button" id="segOther" data-sec="other" aria-pressed="false">Other · Друго</button>
+      </div>
+      <button class="primary" id="addBtn" type="submit">Add to list</button>
+    </div>
+    <p class="status" id="status" aria-live="polite">Loading the list…</p>
+  </form>
+
+  <section id="sec-food">
+    <div class="sec-head"><h2>Food</h2><span class="mk">Храна</span><span class="count" id="count-food"></span></div>
+    <ul id="list-food"><li class="empty">Nothing here yet. Add the first food item above.</li></ul>
+  </section>
+
+  <section id="sec-other">
+    <div class="sec-head"><h2>Other things</h2><span class="mk">Друго</span><span class="count" id="count-other"></span></div>
+    <ul id="list-other"><li class="empty">Nothing here yet. Add the first item above.</li></ul>
+  </section>
+
+  <p class="legend">Changes save for everyone who opens this page. The list refreshes by itself every few seconds.</p>
+</div>
+
+<script>
+(function () {
+  const API = "https://bujsloaenarzgfwdvaqk.supabase.co/rest/v1/items";
+  const KEY = "sb_publishable_vTeW7Bc8RNgmLtebxIx5MA_RLXnibnH";
+  const SECTIONS = ["food", "other"];
+  let section = "food";
+  let items = [];
+  let loaded = false;
+  const $ = (id) => document.getElementById(id);
+  const status = (t) => { $("status").textContent = t; };
+
+  async function api(method, query, body) {
+    const headers = { apikey: KEY, "Content-Type": "application/json" };
+    if (method !== "GET") headers.Prefer = "return=minimal";
+    const res = await fetch(API + (query || ""), { method, headers, body: body ? JSON.stringify(body) : undefined });
+    if (!res.ok) throw new Error(res.status + " " + (await res.text()));
+    return method === "GET" ? res.json() : null;
+  }
+
+  document.querySelectorAll(".seg button").forEach((b) => {
+    b.addEventListener("click", () => {
+      section = b.dataset.sec;
+      document.querySelectorAll(".seg button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    });
+  });
+
+  function render() {
+    for (const s of SECTIONS) {
+      const ul = $("list-" + s);
+      const list = items.filter((i) => i.section === s)
+        .sort((a, b) => (a.packed === b.packed ? a.created_at.localeCompare(b.created_at) : a.packed ? 1 : -1));
+      const packed = list.filter((i) => i.packed).length;
+      $("count-" + s).textContent = list.length ? packed + " of " + list.length + " packed" : "";
+      ul.textContent = "";
+      if (!list.length) {
+        const li = document.createElement("li");
+        li.className = "empty";
+        li.textContent = !loaded ? "Loading…" : s === "food" ? "Nothing here yet. Add the first food item above." : "Nothing here yet. Add the first item above.";
+        ul.appendChild(li);
+        continue;
+      }
+      for (const it of list) {
+        const li = document.createElement("li");
+        if (it.packed) li.className = "packed";
+        const cb = document.createElement("input");
+        cb.type = "checkbox"; cb.className = "check"; cb.checked = !!it.packed; cb.id = "chk-" + it.id;
+        cb.setAttribute("aria-label", "Packed: " + it.name);
+        cb.addEventListener("change", () => setPacked(it, cb.checked));
+        const txt = document.createElement("label");
+        txt.className = "txt"; txt.htmlFor = cb.id;
+        const n = document.createElement("span"); n.className = "name"; n.textContent = it.name;
+        txt.appendChild(n);
+        if (it.note) { const q = document.createElement("span"); q.className = "note"; q.textContent = it.note; txt.appendChild(q); }
+        const del = document.createElement("button");
+        del.type = "button"; del.className = "del"; del.textContent = "Remove";
+        let timer = null;
+        del.addEventListener("click", () => {
+          if (!del.classList.contains("arm")) {
+            del.classList.add("arm"); del.textContent = "Tap to confirm";
+            timer = setTimeout(() => { del.classList.remove("arm"); del.textContent = "Remove"; }, 3000);
+            return;
+          }
+          clearTimeout(timer); remove(it);
+        });
+        li.append(cb, txt, del);
+        ul.appendChild(li);
+      }
+    }
+  }
+
+  async function refresh() {
+    if (document.querySelector(".del.arm")) return; // don't redraw while a remove is waiting for confirmation
+    try {
+      items = await api("GET", "?select=*&order=created_at");
+      loaded = true;
+      if (/Loading|Can't reach/.test($("status").textContent)) status("");
+      render();
+    } catch (e) {
+      status("Can't reach the list right now. Check your internet connection.");
+    }
+  }
+
+  async function setPacked(it, v) {
+    it.packed = v; render();
+    try { await api("PATCH", "?id=eq." + it.id, { packed: v }); }
+    catch (e) { status("Couldn't save that tick. Try again."); }
+    refresh();
+  }
+  async function remove(it) {
+    items = items.filter((x) => x.id !== it.id); render();
+    try { await api("DELETE", "?id=eq." + it.id); status("Removed " + it.name + "."); }
+    catch (e) { status("Couldn't remove it. Try again."); }
+    refresh();
+  }
+
+  $("addForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = $("name").value.trim();
+    if (!name) return;
+    $("addBtn").disabled = true;
+    try {
+      await api("POST", "", { name, note: $("qty").value.trim(), section });
+      $("name").value = ""; $("qty").value = ""; $("name").focus();
+      status("Added " + name + " to " + (section === "food" ? "Food" : "Other things") + ".");
+      await refresh();
+    } catch (err) {
+      status("Couldn't add it. Check your connection and try again.");
+    } finally { $("addBtn").disabled = false; }
+  });
+
+  refresh();
+  setInterval(() => { if (!document.hidden) refresh(); }, 5000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+})();
+</script>
+</body>
+</html>
